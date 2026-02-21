@@ -52,6 +52,11 @@ body {
   color: #333;
 }
 
+.updateBtn{
+
+    margin-top: 5px;
+}
+
 
 .post-img {
   width: 100%;          
@@ -120,6 +125,17 @@ header h1 {
  <% if (post.userId && post.userId._id.toString() === loggedInUserId) { %>
   <form action="/deletepost/<%= post._id %>" method="POST">
     <button type="submit" class="delete-btn">Delete</button>
+  </form>
+
+     <!-- Update Caption Form -->
+  <form action="/updatePost/<%= post._id %>" method="POST">
+    <input 
+      type="text" 
+      name="caption" 
+      value="<%= post.caption %>" 
+      required
+    />
+    <button type="submit" class="delete-btn">Update</button>
   </form>
 <% } %>
       <strong>

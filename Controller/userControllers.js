@@ -119,3 +119,21 @@ module.exports.deletePost = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
+
+module.exports.postUpdate= async (req,res)=>{
+  try {
+    const postId = req.params.id;
+    const { caption } = req.body;
+
+    const post = await Post.findById(postId);
+
+    post.caption = caption;
+    await post.save();
+
+    res.redirect("/Feeds");
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
