@@ -138,3 +138,31 @@ module.exports.postUpdate= async (req,res)=>{
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
+module.exports.updateLikes=async(req,res)=>{
+  try {
+    const postId = req.params.id;
+    const userId = req.user.userId;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
+
+    const likeIndex = post.likes.indexOf(userId);
+
+    if (likeIndex === -1) {
+      post.likes.push(userId);
+    } else {
+      post.likes.splice(likeIndex, 1);
+    }
+
+    await post.save();
+
+    res.json({ success: true, likesCount: post.likes.length });
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  } 
+}

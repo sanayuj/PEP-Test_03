@@ -9,7 +9,8 @@ const {
   userLogout,
   feeds,
   deletePost,
-  postUpdate
+  postUpdate,
+  updateLikes
 } = require("../Controller/userControllers");
 
 router.post("/signup", signup);
@@ -24,5 +25,5 @@ router.get("/logout", userLogout);
 router.get("/Feeds", AuthMiddleware.verifyToken, feeds);
 router.post("/deletePost/:id", AuthMiddleware.verifyToken,deletePost);
 router.post("/updatePost/:id", AuthMiddleware.verifyToken,postUpdate);
-
+router.patch("/likePost/:id", AuthMiddleware.verifyToken,updateLikes);
 module.exports = router;
