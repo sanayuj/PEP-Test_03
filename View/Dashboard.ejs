@@ -1,117 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blog Dashboard</title>
-<style>* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
 
-body {
-  background: #f5f5f5;
-}
+      body {
+        background: #f5f5f5;
+      }
 
-header {
-  background: #222;
-  color: white;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+      header {
+        background: #222;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-header h1 {
-  font-size: 24px;
-  margin: 0;
-}
+      header h1 {
+        font-size: 24px;
+        margin: 0;
+      }
 
-.logout-btn {
-  background: #ff4444;
-  color: white;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 14px;
-}
+      .logout-btn {
+        background: #ff4444;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+      }
 
-.logout-btn:hover {
-  background: #cc0000;
-}
-
-.container {
-  width: 400px;
-  margin: 80px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 6px;
-}
-
-input, button {
-  width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-}
-
-button {
-  background: #222;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #444;
-}
-
-a {
-  text-decoration: none;
-  color: #222;
-}
-
-.post {
-  background: white;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-}
-
-.post img {
-  width: 100%;
+      .preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
   margin-top: 10px;
-  border-radius: 4px;
 }
 
-.pagination a {
-  margin: 0 5px;
-  padding: 5px 10px;
-  background: #ddd;
-}</style>
-</head>
-<body>
- <link rel="stylesheet" href="/style.css">
- <header class="header">
-        <h1>Welcome to Your Dashboard</h1>
-        <a href="/logout" class="logout-btn">Logout</a>
+.preview img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+      .logout-btn:hover {
+        background: #cc0000;
+      }
+
+      .container {
+        width: 400px;
+        margin: 80px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 6px;
+      }
+
+      input,
+      button {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+      }
+
+      button {
+        background: #222;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #444;
+      }
+
+      a {
+        text-decoration: none;
+        color: #222;
+      }
+
+      .post {
+        background: white;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+      }
+
+      .post img {
+        width: 100%;
+        margin-top: 10px;
+        border-radius: 4px;
+      }
+
+      .pagination a {
+        margin: 0 5px;
+        padding: 5px 10px;
+        background: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <link rel="stylesheet" href="/style.css" />
+    <header class="header">
+      <h1>Dashboard</h1>
+      <a href="/logout" class="logout-btn">Logout</a>
     </header>
-<div class="container">
-   
-  <h2>Create Post</h2>
+    <div class="container">
+      <h2>Create Post</h2>
 
-  <form action="/postBlog" method="POST" enctype="multipart/form-data">
-    <input name="caption" placeholder="Caption">
-    <input type="file" name="image" required>
-    <button>Post</button>
-  </form>
+      <form action="/postBlog" method="POST" enctype="multipart/form-data">
+        <input name="caption" placeholder="Caption" required />
 
-  <a href="/Feeds">← Back to feed</a>
-</div>
+        <input type="file" name="image" id="images" multiple accept="image/*" />
 
-</body>
+        <div id="preview" class="preview"></div>
+
+        <button>Post</button>
+      </form>
+
+      <a href="/Feeds">← Back to feed</a>
+    </div>
+  </body>
+ <script>
+  const input = document.getElementById("images");
+  const preview = document.getElementById("preview");
+
+  let selectedFiles = []; 
+
+
+  input.addEventListener("change", () => {
+    const newFiles = Array.from(input.files);
+    const MAX_IMAGES = 6;
+
+    newFiles.forEach(file => {
+      if (!file.type.startsWith("image/")) return;
+
+      if (selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
+        return;
+      }
+
+      if (selectedFiles.length >= MAX_IMAGES) {
+        alert(`Maximum ${MAX_IMAGES} images allowed`);
+        return;
+      }
+
+      selectedFiles.push(file);
+      console.log(selectedFiles,"FILESSSS!!!!");
+      
+
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      preview.appendChild(img);
+    });
+
+    const dataTransfer = new DataTransfer();
+    selectedFiles.forEach(file => dataTransfer.items.add(file));
+    input.files = dataTransfer.files;
+  });
+</script>
 </html>

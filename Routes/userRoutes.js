@@ -17,7 +17,7 @@ router.post("/login", login);
 router.post(
   "/postBlog",
   AuthMiddleware.verifyToken,
-  multer.single("image"),
+  multer.array("image", 6),
   postBlog,
 );
 router.get("/logout", userLogout);

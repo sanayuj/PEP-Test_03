@@ -46,7 +46,7 @@ module.exports.login = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     //
-    return res.redirect("/Dashboard");
+    return res.redirect("/Feeds");
   } catch (error) {
     console.error(error);
     return res.redirect("/");
@@ -61,14 +61,15 @@ module.exports.userLogout = (req, res) => {
 module.exports.postBlog = async (req, res, next) => {
   try {
     console.log(req.body, "This is post blog controller");
+    console.log(req.files, "This is file from post blog controller");
 
     const { caption } = req.body;
-    const postUrl = req.file.filename;
+   const postUrls = req.files.map(file => file.filename);
     const userId = req.user.userId;
     // console.log(caption,userId,postUrl, "$$$$$$$");
 
     const newPost = new Post({
-      postUrl,
+      postUrl:postUrls,
       caption,
       userId,
     });

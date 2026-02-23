@@ -7,7 +7,7 @@ const postSchema = new mongoose.Schema({
     required: true
   },
   postUrl: {
-    type: String,
+    type: [String],
     required: true
   },
   caption: {

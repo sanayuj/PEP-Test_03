@@ -10,6 +10,129 @@
   box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
+
+.post {
+  position: relative; /* needed for absolute positioning */
+  background: #fff;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.edit-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #222;
+  font-size: 18px;
+  transition: color 0.2s;
+  z-index: 10; /* make sure it’s on top */
+}
+
+.edit-icon:hover {
+  color: #555;
+}
+
+.edit-form {
+  margin-top: 30px; /* move form below post content */
+  display: none;
+}
+
+.edit-form input {
+  padding: 4px 8px;
+  font-size: 14px;
+  width: 70%;
+}
+
+.edit-form button {
+  padding: 4px 8px;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-form button:hover {
+  background: #444;
+}
+
+.edit-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+
+.edit-icon {
+  cursor: pointer;
+  color: #222;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.edit-icon:hover {
+  color: #555;
+}
+
+.edit-form input {
+  padding: 4px 8px;
+  font-size: 14px;
+  margin: 5px;
+}
+
+.edit-form button {
+  padding: 4px 8px;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-form button:hover {
+  background: #444;
+}
+
+.slideshow-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  margin-top: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.slideshow-container button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 18px;
+  user-select: none;
+}
+
+.slideshow-container .prev {
+  left: 10px;
+}
+
+.slideshow-container .next {
+  right: 10px;
+}
 .logout-btn {
   background: #ff4444;
   color: white;
@@ -122,21 +245,14 @@ header h1 {
 
   <% posts.forEach(post => { %>
     <div class="post">
- <% if (post.userId && post.userId._id.toString() === loggedInUserId) { %>
-  <form action="/deletepost/<%= post._id %>" method="POST">
-    <button type="submit" class="delete-btn">Delete</button>
-  </form>
-
-     <!-- Update Caption Form -->
-  <form action="/updatePost/<%= post._id %>" method="POST">
-    <input 
-      type="text" 
-      name="caption" 
-      value="<%= post.caption %>" 
-      required
-    />
-    <button type="submit" class="delete-btn">Update</button>
-  </form>
+<% if (post.userId && post.userId._id.toString() === loggedInUserId) { %>
+  <div class="edit-container">
+    <span class="edit-icon" title="Edit Caption">&#9998;</span> 
+    <form class="edit-form" action="/updatePost/<%= post._id %>" method="POST" style="display: none;">
+      <input type="text" name="caption" value="<%= post.caption %>" required />
+      <button type="submit">Save</button>
+    </form>
+  </div>
 <% } %>
       <strong>
         <%= post.userId ? post.userId.name : "Unknown" %>
@@ -144,9 +260,15 @@ header h1 {
 
       <p><%= post.caption %></p>
 
-      <% if (post.postUrl) { %>
-        <img src="/uploads/<%= post.postUrl %> " alt="post image" />
-      <% } %>
+     <% if (post.postUrl && post.postUrl.length > 0) { %>
+  <div class="slideshow-container" data-images='<%= JSON.stringify(post.postUrl) %>'>
+    <img src="/uploads/<%= post.postUrl[0] %>" class="slide" />
+   <% if (post.postUrl.length > 1) { %>
+      <button class="prev">&#10094;</button>
+      <button class="next">&#10095;</button>
+    <% } %>
+  </div>
+<% } %>
 
     </div>
   <% }) %>
@@ -166,4 +288,34 @@ header h1 {
 </div>
 </div>
     </body>
+    <script>
+document.querySelectorAll('.slideshow-container').forEach(container => {
+  const images = JSON.parse(container.dataset.images);
+  const imgEl = container.querySelector('.slide');
+  const prevBtn = container.querySelector('.prev');
+  const nextBtn = container.querySelector('.next');
+  let current = 0;
+
+  function showSlide(index) {
+    current = (index + images.length) % images.length;
+    imgEl.src = '/uploads/' + images[current];
+  }
+
+  prevBtn.addEventListener('click', () => showSlide(current - 1));
+  nextBtn.addEventListener('click', () => showSlide(current + 1));
+
+  document.querySelectorAll('.edit-container').forEach(container => {
+  const icon = container.querySelector('.edit-icon');
+  const form = container.querySelector('.edit-form');
+
+  icon.addEventListener('click', () => {
+    if(form.style.display === 'none') {
+      form.style.display = 'flex';  
+    } else {
+      form.style.display = 'none'; 
+    }
+  });
+});
+});
+</script>
 </html>
