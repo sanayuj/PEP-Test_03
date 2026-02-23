@@ -43,19 +43,19 @@
       }
 
       .preview {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 10px;
-}
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+      }
 
-.preview img {
-  width: 100%;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-}
+      .preview img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+      }
       .logout-btn:hover {
         background: #cc0000;
       }
@@ -80,6 +80,11 @@
         color: white;
         border: none;
         cursor: pointer;
+      }
+
+      .nav-btn {
+        color: white;
+        text-decoration: none;
       }
 
       button:hover {
@@ -115,6 +120,7 @@
     <link rel="stylesheet" href="/style.css" />
     <header class="header">
       <h1>Dashboard</h1>
+      <a href="/Feeds" class="nav-btn">Show Feeds</a>
       <a href="/logout" class="logout-btn">Logout</a>
     </header>
     <div class="container">
@@ -133,41 +139,43 @@
       <a href="/Feeds">← Back to feed</a>
     </div>
   </body>
- <script>
-  const input = document.getElementById("images");
-  const preview = document.getElementById("preview");
+  <script>
+    const input = document.getElementById("images");
+    const preview = document.getElementById("preview");
 
-  let selectedFiles = []; 
+    let selectedFiles = [];
 
+    input.addEventListener("change", () => {
+      const newFiles = Array.from(input.files);
+      const MAX_IMAGES = 6;
 
-  input.addEventListener("change", () => {
-    const newFiles = Array.from(input.files);
-    const MAX_IMAGES = 6;
+      newFiles.forEach((file) => {
+        if (!file.type.startsWith("image/")) return;
 
-    newFiles.forEach(file => {
-      if (!file.type.startsWith("image/")) return;
+        if (
+          selectedFiles.some(
+            (f) => f.name === file.name && f.size === file.size,
+          )
+        ) {
+          return;
+        }
 
-      if (selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
-        return;
-      }
+        if (selectedFiles.length >= MAX_IMAGES) {
+          alert(`Maximum ${MAX_IMAGES} images allowed`);
+          return;
+        }
 
-      if (selectedFiles.length >= MAX_IMAGES) {
-        alert(`Maximum ${MAX_IMAGES} images allowed`);
-        return;
-      }
+        selectedFiles.push(file);
+        console.log(selectedFiles, "FILESSSS!!!!");
 
-      selectedFiles.push(file);
-      console.log(selectedFiles,"FILESSSS!!!!");
-      
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        preview.appendChild(img);
+      });
 
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      preview.appendChild(img);
+      const dataTransfer = new DataTransfer();
+      selectedFiles.forEach((file) => dataTransfer.items.add(file));
+      input.files = dataTransfer.files;
     });
-
-    const dataTransfer = new DataTransfer();
-    selectedFiles.forEach(file => dataTransfer.items.add(file));
-    input.files = dataTransfer.files;
-  });
-</script>
+  </script>
 </html>

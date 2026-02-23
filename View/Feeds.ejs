@@ -11,13 +11,63 @@
   font-family: Arial, sans-serif;
 }
 
+body {
+  background: #f5f5f5;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background: #222;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+  font-size: 24px;
+}
+
+.logout-btn, .nav-btn {
+  background: #ff4444;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.logout-btn:hover, .nav-btn:hover {
+  background: #cc0000;
+}
+
+.container {
+  max-width: 600px;
+  margin: 30px auto;
+}
+
 .post {
-  position: relative; /* needed for absolute positioning */
+  position: relative;
   background: #fff;
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.username {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.caption {
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .edit-icon {
@@ -28,7 +78,7 @@
   color: #222;
   font-size: 18px;
   transition: color 0.2s;
-  z-index: 10; /* make sure it’s on top */
+  z-index: 10;
 }
 
 .edit-icon:hover {
@@ -36,51 +86,19 @@
 }
 
 .edit-form {
-  margin-top: 30px; /* move form below post content */
+  margin-top: 30px;
   display: none;
-}
-
-.edit-form input {
-  padding: 4px 8px;
-  font-size: 14px;
-  width: 70%;
-}
-
-.edit-form button {
-  padding: 4px 8px;
-  background: #222;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.edit-form button:hover {
-  background: #444;
-}
-
-.edit-container {
   display: flex;
+  gap: 5px;
   align-items: center;
-  margin-bottom: 6px;
-  gap: 8px;
-}
-
-.edit-icon {
-  cursor: pointer;
-  color: #222;
-  font-size: 16px;
-  transition: color 0.2s;
-}
-
-.edit-icon:hover {
-  color: #555;
 }
 
 .edit-form input {
   padding: 4px 8px;
   font-size: 14px;
-  margin: 5px;
+  flex: 1;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 .edit-form button {
@@ -133,75 +151,72 @@
 .slideshow-container .next {
   right: 10px;
 }
-.logout-btn {
-  background: #ff4444;
-  color: white;
-  padding: 8px 15px;
+
+.post-actions {
+
+  bottom: 10px;
+  left: 30px;
+  display: flex;
+  gap: 15px;
+  background: rgba(255,255,255,0.7);
+  padding: 5px 10px;
+  border-radius: 10px;
+  width: 90%;
+}
+
+.post-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+}
+
+.like-btn {
+  color: #e74c3c;
+}
+
+.like-btn:hover {
+  color: #c0392b;
+}
+
+.comment-toggle-btn {
+  color: #555;
+}
+
+.comment-toggle-btn:hover {
+  color: #222;
+}
+
+.comment-form {
+ display: none;
+  gap: 5px;
+  margin-left: 10px;
+}
+
+.comment-form input {
+  flex: 1;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.comment-form button {
+  background: #222;
+  color: #fff;
   border: none;
   border-radius: 4px;
+  padding: 4px 8px;
   cursor: pointer;
-  text-decoration: none;
+}
+
+.comment-form button:hover {
+  background: #444;
+}
+
+.comments-list p {
+  margin: 3px 0;
   font-size: 14px;
-}
-body {
-  background: #f5f5f5;
-  font-family: Arial, sans-serif;
-}
-
-
-.container {
-  max-width: 600px;
-  margin: 30px auto;
-}
-
-
-.post {
-  background: #fff;
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.username {
-  font-weight: bold;
-  display: block;
-  margin-bottom: 6px;
-}
-
-
-.caption {
-  margin-bottom: 10px;
-  color: #333;
-}
-
-.updateBtn{
-
-    margin-top: 5px;
-}
-
-
-.post-img {
-  width: 100%;          
-  height: 300px;        
-  object-fit: cover;    
-  border-radius: 6px;
-  background: #eee;
-}
-
-header {
-  background: #222;
-  color: white;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-header h1 {
-  font-size: 24px;
-  margin: 0;
 }
 
 .pagination {
@@ -230,6 +245,7 @@ header h1 {
     <body>
         <header class="header">
         <h1>Feeds</h1>
+         <a href="/Dashboard" class="nav-btn">Upload Post</a>
         <a href="/logout" class="logout-btn">Logout</a>
     </header>
 <div class="container">
@@ -237,7 +253,7 @@ header h1 {
   <link rel="stylesheet" href="/style.css">
 
 <div class="container">
-  <h2>Feeds</h2>
+  <h2 class="sub_heading"> Feeds</h2>
 
   <% if (posts.length === 0) { %>
     <p>No posts yet</p>
@@ -260,16 +276,41 @@ header h1 {
 
       <p><%= post.caption %></p>
 
-     <% if (post.postUrl && post.postUrl.length > 0) { %>
+    <% if (post.postUrl && post.postUrl.length > 0) { %>
   <div class="slideshow-container" data-images='<%= JSON.stringify(post.postUrl) %>'>
     <img src="/uploads/<%= post.postUrl[0] %>" class="slide" />
-   <% if (post.postUrl.length > 1) { %>
+    <% if (post.postUrl.length > 1) { %>
       <button class="prev">&#10094;</button>
       <button class="next">&#10095;</button>
     <% } %>
   </div>
 <% } %>
 
+<!-- Like and Comment Section -->
+<div class="post-actions">
+  <button class="like-btn" data-postid="<%= post._id %>">
+    &#10084; <span class="like-count"><%= post.likes ? post.likes.length : 0 %></span>
+  </button>
+
+  <button class="comment-toggle-btn" data-postid="<%= post._id %>">
+    💬 Comments 
+  </button>
+
+  <!-- Comment Form (hidden by default) -->
+  <form class="comment-form" data-postid="<%= post._id %>">
+    <input type="text" name="comment" placeholder="Add a comment..." required />
+    <button type="submit">Post</button>
+  </form>
+
+  <!-- Comments List -->
+  <div class="comments-list" id="comments-<%= post._id %>">
+    <!-- <% if (post.comments) { %>
+      <% post.comments.forEach(comment => { %>
+        <p><strong><%= comment.user.name %>:</strong> <%= comment.text %></p>
+      <% }) %>
+    <% } %> -->
+  </div>
+</div>
     </div>
   <% }) %>
 </div>
@@ -289,33 +330,10 @@ header h1 {
 </div>
     </body>
     <script>
-document.querySelectorAll('.slideshow-container').forEach(container => {
-  const images = JSON.parse(container.dataset.images);
-  const imgEl = container.querySelector('.slide');
-  const prevBtn = container.querySelector('.prev');
-  const nextBtn = container.querySelector('.next');
-  let current = 0;
-
-  function showSlide(index) {
-    current = (index + images.length) % images.length;
-    imgEl.src = '/uploads/' + images[current];
-  }
-
-  prevBtn.addEventListener('click', () => showSlide(current - 1));
-  nextBtn.addEventListener('click', () => showSlide(current + 1));
-
-  document.querySelectorAll('.edit-container').forEach(container => {
-  const icon = container.querySelector('.edit-icon');
-  const form = container.querySelector('.edit-form');
-
-  icon.addEventListener('click', () => {
-    if(form.style.display === 'none') {
-      form.style.display = 'flex';  
-    } else {
-      form.style.display = 'none'; 
-    }
-  });
-});
-});
-</script>
+      document.querySelectorAll(".like-btn").forEach(btn => {
+        btn.addEventListener("click", function() {
+          alert("Like button clicked!");
+        });
+      });
+    </script>
 </html>
